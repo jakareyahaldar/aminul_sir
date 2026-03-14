@@ -1,6 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"
 
 export default function AdminLogin() {
+  const API = import.meta.env.VITE_API_URL
+  const Navigate = useNavigate()
+  
   const [form, setForm] = useState({
     username: "",
     password: ""
@@ -19,20 +23,26 @@ export default function AdminLogin() {
     e.preventDefault();
 
     try {
-      console.log("Login Data:", form);
-
-      // example api call
-      // const res = await fetch("/api/admin-login", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(form)
-      // });
-
-      alert("Login Submitted");
+      const payload = {
+        method: "POST",
+        headers:{ "content-type": "application/json" },
+        body: JSON.stringify(form)
+      }
+      const req = await fetch(API+"/admin-login",payload)
+      const res = await req.json()
+      
+      if(req.ok){
+        console.log(res.admin)
+        window.localStorage.setItem("admntkn",JSON.stringify(res.admin))
+        Navigate("/admin")
+      }
+      if(!req.ok){
+        throw Error(res.message)
+      }
 
     } catch (error) {
       console.error("Login Error:", error);
-      alert("Login Failed");
+      alert(error.message);
     }
   };
 

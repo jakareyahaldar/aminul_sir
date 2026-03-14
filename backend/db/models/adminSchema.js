@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const adminSchema = new Schema({
@@ -6,6 +6,8 @@ const adminSchema = new Schema({
   username: { type: String, default: "admin@admin.com" },
   password: { type: String, default: "admin" },
   avatar: String,
-});
+  token: String
+},{timestamps: true});
 
 const adminColl = mongoose.model('admin', adminSchema);
+module.exports = adminColl

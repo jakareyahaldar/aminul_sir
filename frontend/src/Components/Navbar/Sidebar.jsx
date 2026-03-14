@@ -14,7 +14,7 @@ const Sidebar = ({close}) => {
   ];
 
   return (
-    <div onClick={close} className="on w-full absolute top-0 left-0 z-50">
+    <div onClick={close} className="on w-full fixed md:absolute top-0 left-0 z-50">
       <div className=" w-80 h-full bg-white shadow-xl flex flex-col">
       {/* Profile Section from your Screenshot */}
       <div className="p-6 text-center border-b border-gray-100 bg-gray-50/50">
