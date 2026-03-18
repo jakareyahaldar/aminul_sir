@@ -4,9 +4,10 @@ const express = require("express")
 const app = express()
 
 const adminRouter = require("./Routers/adminRouter.js")
+const userRouter = require("./Routers/userRouter.js")
 
 // variables
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 4000
 
 
 // database connect req 
@@ -17,6 +18,7 @@ app.use(cors())
 
 // Routers  
 app.use(adminRouter)
+app.use(userRouter)
 
 
 

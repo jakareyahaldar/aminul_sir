@@ -1,13 +1,32 @@
 import { Outlet, Navigate } from "react-router-dom"
+import NavBar from "../Components/Navbar/Navbar.jsx"
+import BottomBar from "../Components/BottomBar.jsx"
+
+import { useSelector } from "react-redux"
 
 export default function AdminPrivetComponent(){
     
+   // const { account, isLoading } = useSelector( e => e.auth )
+    
+    
+    //let pass = false
+    
     const lcl = window.localStorage.getItem("admntkn")
-    const adimn = lcl ? JSON.parse(lcl) : null
+    const admin = lcl ? JSON.parse(lcl) : null
   
-    const auth = adimn?.token
-
-    if(auth) return <Outlet />
-    if(!auth) return <Navigate to="/admin-login" />
+    // if(admin && admin.token && account && account.token){
+    //   pass = admin.token === account.token
+    // }
+    
+    const pass = !!admin?.token
+    
+    if(pass) return ( 
+      <>
+        <NavBar />
+        <BottomBar />
+        <Outlet />
+      </>
+      )
+    if(!pass) return <Navigate to="/admin-login" />
 
 }

@@ -1,4 +1,6 @@
 const adminColl = require("../db/models/adminSchema.js")
+const userColl = require("../db/models/userSchrma.js")
+const bookColl = require("../db/models/bookSchema.js")
 var jwt = require('jsonwebtoken');
 
 const PRIVET_KEY = process.env.PRIVET_KEY
@@ -44,6 +46,98 @@ Controlars.adminLogin = async (req,resp)=>{
   }catch(err){
     resp.status(500).json({message: err.message})
   }
+}
+
+
+
+// Get admin 
+Controlars.getAdmin = async (req,resp)=>{
+  try{
+    const id = req.params.id
+    if(!id) throw Error("Id not Found.")
+    
+    const admin = await adminColl.findOne({_id:id})
+    admin.password = ""
+    
+    resp.status(200).json({data:admin})
+    
+  }catch(err){
+    resp.status(500).json({message: err.message})
+  }
+}
+
+// Get all users 
+Controlars.Users = async (req,resp)=>{
+  try{
+    const users = await userColl.find()
+    resp.status(200).json({users})
+  }catch(err){
+    resp.status(500).json({ message: err.message })
+  }
+}
+
+
+
+// Aprove Controlar 
+Controlars.AproveChange = async (req,resp)=>{
+  try{
+    const { isAprove } = req.body
+    const { id } = req.params
+    if( !id || typeof(isAprove) !== "boolean" ) throw Error("Invalid Data error.")
+    
+    // find user
+    const user = await userColl.findOne({_id:id})
+    if(!user) throw Error("User Not found.")
+    // update is aprove 
+    user.isAprove = isAprove
+    await user.save()
+    
+    resp.status(200).json({message:"ok"})
+    
+  }catch({message}) { resp.status(500).json({message}) }
+}
+
+
+// Add Book 
+Controlars.addBook = async (req,resp)=>{
+  try{
+    const { body } = req 
+    const book = new bookColl(body)
+    await book.save()
+    
+    resp.status(200).json({message:"ok"})
+    
+  }catch(message){ resp.status(500).json({message}) }
+}
+
+
+// Get books
+Controlars.getBooks = async (req,resp)=>{
+  try{
+    const data = await bookColl.find()
+    resp.status(200).json({data})
+  }catch(err){
+    resp.status(500).json({message: err.message})
+  }
+}
+
+// Update book 
+Controlars.updateBooks = async (req,resp)=>{
+  try{
+    const {body} = req
+    const save = await bookColl.findOneAndUpdate({_id:body._id},body)
+    resp.status(200).json({message:"ok"})
+  }catch({message}){resp.status(500).json({message})}
+}
+
+
+// Delete book 
+Controlars.deleteBook = async (req,resp)=>{
+  try{
+    const { _id } = req.params
+    await bookColl.findOneAndDelete({_id})
+    resp.status(200).json({message:"ok"})
+  }catch({message}){resp.status(500).json({message})}
 }
 
 

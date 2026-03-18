@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"
+import Navbar from "../../Components/Navbar/Navbar.jsx"
+import BottomBar from "../../Components/BottomBar.jsx"
+import { useDispatch } from "react-redux"
+import { GetAccount } from "../../feature/auth/authSlice.js"
 
 export default function AdminLogin() {
+  const dispatch = useDispatch()
   const API = import.meta.env.VITE_API_URL
   const Navigate = useNavigate()
   
@@ -32,8 +37,8 @@ export default function AdminLogin() {
       const res = await req.json()
       
       if(req.ok){
-        console.log(res.admin)
         window.localStorage.setItem("admntkn",JSON.stringify(res.admin))
+        dispatch(GetAccount())
         Navigate("/admin")
       }
       if(!req.ok){
@@ -47,7 +52,10 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <>
+    <Navbar />
+    <BottomBar />
+    <div className="py-20 flex items-center justify-center min-h-screen bg-gray-100">
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded-xl shadow-md w-80"
@@ -80,5 +88,6 @@ export default function AdminLogin() {
         </button>
       </form>
     </div>
+    </>
   );
 }

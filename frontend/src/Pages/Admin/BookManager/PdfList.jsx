@@ -1,33 +1,15 @@
 import { useState, useEffect } from "react"
 
 import PdfCard from "./PdfCard.jsx"
-import ImageObj from "../../utilities/placeImage.js"
 
-export default function PdfList({list}){
+
+export default function PdfList({books}){
   const API = import.meta.env.VITE_API_URL
-  
-  const books = list
-  
-  // async function GetBooks(){
-  //   try{
-  //     const req = await fetch(API+"/book")
-  //     const res = await req.json()
-  //     if(req.ok){
-  //       setBooks(res.data)
-  //     }
-  //   }catch(err){
-  //     console.log(err)
-  //   }
-  // }
-  
-  // useEffect(()=>{
-  //   GetBooks()
-  // },[])
   
   
   
   return(
-    <div className="p-5">
+    <div className="p-5 pb-10">
       <div className="my-5">
         <h3 className="text-xl font-bold">বই ও শীট সংগ্রহ</h3>
         <p className="text-sm">মোট {books.length} টি ফাইল</p>
@@ -40,14 +22,7 @@ export default function PdfList({list}){
         {
           books.map((book)=>{
             return <PdfCard 
-            _id={book._id} 
-            title={book.title} 
-            level={book.level} 
-            category={book.category} 
-            image={ImageObj[book.file_type]}
-            size={book.size} 
-            file_type={book.file_type}
-            file_url={book.file_url}
+              data={book}
             />
             
           })

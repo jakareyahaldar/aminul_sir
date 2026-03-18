@@ -15,7 +15,6 @@ export default function TopBar({filterAction}){
             <i className="fas fa-search"></i>
             <input className="bg-transparent outline-0" placeholder="বই বা শিট খুঁজুন" />
           </div>
-          {/*<i className="flex justify-center items-center h-12 w-12 rounded-xl bg-[#b8d3dd] text-xl fas fa-heart"></i>*/}
           <i onClick={filterAction} className="flex justify-center items-center h-12 w-12 rounded-xl bg-black text-white text-xl fa-solid fa-filter"></i>
         </div>
       </div>

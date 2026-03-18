@@ -5,16 +5,16 @@ import BackAndTitle from "../../Components/BackAndTitle.jsx"
 
 const option_config = [
   {
-    title: "Pdf-Book",
-    path:"pdf-manager",
+    title: "Book Manage",
+    path:"/admin/pdf-book",
   },
   {
     title: "Practice Question",
-    path:"pdf-manager",
+    path:"/pdf-manager",
   },
   {
-    title: "Videos",
-    path:"pdf-manager",
+    title: "Users",
+    path:"/users",
   },
 ]
 

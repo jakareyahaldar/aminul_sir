@@ -1,11 +1,19 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux"
+import { GetAccount } from "../../feature/auth/authSlice.js"
 
 export default function AuthForm() {
+  const dispatch = useDispatch()
+  const API = import.meta.env.VITE_API_URL
+  const Navigate = useNavigate()
+  
   const [mode, setMode] = useState("login");
 
   const [form, setForm] = useState({
+    name:"",
     username: "",
-    email: "",
+    phone: "",
     password: ""
   });
 
@@ -23,27 +31,38 @@ export default function AuthForm() {
 
     try {
       if (mode === "signup") {
-        if (!form.username || !form.email || !form.password) {
+        if (!form.name || !form.username || !form.phone || !form.password) {
           alert("All fields are required");
           return;
         }
       } else {
-        if (!form.username || !form.password) {
+        if (!form.phone || !form.password) {
           alert("Username and Password required");
           return;
         }
       }
 
-      console.log(mode, form);
-
-      // example API call
-      // await fetch(`/api/${mode}`, {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(form)
-      // });
-
-      alert(mode === "login" ? "Login Success" : "Signup Success");
+      // build payload 
+      const payload = {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(form)
+      }
+      const req_path = mode === "login" ? "/login" : "/signup"
+      
+      // request send 
+      const req = await fetch(API+req_path,payload)
+      const res = await req.json()
+      
+      if(req.ok){
+        window.localStorage.setItem("user_data",JSON.stringify(res.user))
+        alert(mode === "login" ? "Login Success" : "Signup Success");
+        dispatch(GetAccount())
+        Navigate("/")
+      }else{
+        alert(res.message)
+      }
+      
 
     } catch (error) {
       console.error(error);
@@ -61,7 +80,7 @@ export default function AuthForm() {
           {mode === "login" ? "User Login" : "User Signup"}
         </h2>
 
-        {mode === "signup" && (
+        {/*false && (
           <input
             type="text"
             name="username"
@@ -70,29 +89,37 @@ export default function AuthForm() {
             onChange={handleChange}
             className="w-full mb-3 p-2 border rounded"
           />
-        )}
+        ) */}
 
         {mode === "signup" && (
           <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={form.email}
+            type="name"
+            name="name"
+            placeholder="Name"
+            value={form.name}
             onChange={handleChange}
             className="w-full mb-3 p-2 border rounded"
           />
         )}
-
-        {mode === "login" && (
           <input
+            type="number"
+            name="phone"
+            placeholder="Phone"
+            value={form.phone}
+            onChange={handleChange}
+            className="w-full mb-3 p-2 border rounded"
+          />
+
+        
+         { mode === "signup" && <input
             type="text"
             name="username"
             placeholder="Username"
             value={form.username}
             onChange={handleChange}
             className="w-full mb-3 p-2 border rounded"
-          />
-        )}
+          />}
+      
 
         <input
           type="password"
