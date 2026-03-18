@@ -28,7 +28,7 @@ const Navbar = () => {
         <div className="flex flex-col">
           <h1 className="text-white text-2xl font-black leading-none tracking-tight">BTSC</h1>
           <p className="text-white text-[9px] font-bold uppercase tracking-widest opacity-90">
-            Technical Training Center
+            Computer Operation
           </p>
         </div>
       </div>
