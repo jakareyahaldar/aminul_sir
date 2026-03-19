@@ -11,5 +11,21 @@ router.get("/book",Controlars.getBooks)
 router.put("/book",Controlars.updateBooks)
 router.delete("/book/:_id/delete",Controlars.deleteBook)
 
+// Exams  
+router.post("/exam",Controlars.AddExam)
+router.get("/exam",Controlars.GetExams)
+router.put("/exam",Controlars.UpdateExam)
+router.delete("/exam",Controlars.deleteExam)
+
+// Avatar  
+router.post("/admin/avatar",Controlars.AdminAvatar)
+
+// Slider  
+router.post("/slider",Controlars.AddSlider)
+router.get("/slider",Controlars.GetSliders)
+router.delete("/slider",Controlars.deleteSlider)
+//router.put("/slider",Controlars.editSlider)
+
+
 
 module.exports = router

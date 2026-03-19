@@ -3,6 +3,9 @@ var cors = require('cors')
 const express = require("express")
 const app = express()
 
+const fileParser = require('express-multipart-file-parser')
+ 
+
 const adminRouter = require("./Routers/adminRouter.js")
 const userRouter = require("./Routers/userRouter.js")
 
@@ -13,9 +16,9 @@ const PORT = process.env.PORT || 4000
 // database connect req 
 require("./db/mongoose.con.js")
 
+app.use(fileParser)
 app.use(express.json())
 app.use(cors())
-
 // Routers  
 app.use(adminRouter)
 app.use(userRouter)

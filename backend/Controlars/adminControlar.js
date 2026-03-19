@@ -1,6 +1,9 @@
 const adminColl = require("../db/models/adminSchema.js")
 const userColl = require("../db/models/userSchrma.js")
 const bookColl = require("../db/models/bookSchema.js")
+const examColl = require("../db/models/examSchema.js")
+const sliderColl = require("../db/models/sliderSchema.js")
+const { uploadFile, removeFile } = require("../utilities/imagekit.js")
 var jwt = require('jsonwebtoken');
 
 const PRIVET_KEY = process.env.PRIVET_KEY
@@ -139,6 +142,151 @@ Controlars.deleteBook = async (req,resp)=>{
     resp.status(200).json({message:"ok"})
   }catch({message}){resp.status(500).json({message})}
 }
+
+
+// Add Exams 
+Controlars.AddExam = async (req,resp)=>{
+  try{
+    const filds = ["title","path"]
+    const {body} = req
+    filds.forEach( fild => {
+      if(!body[fild]) throw Error("Please Fill "+fild)
+    })
+    
+    const newExam = new examColl(body)
+    const exam = await newExam.save()
+    resp.status(200).json({exam})
+    
+  }catch({message}){
+    resp.status(500).json({message})
+  }
+}
+
+// Get Exams 
+Controlars.GetExams = async (req,resp)=>{
+  try{
+    const exams = await examColl.find()
+    resp.status(200).json({exams})
+  }catch({message}){
+    resp.status(500).json({message})
+  }
+}
+
+
+// Update Exam 
+Controlars.UpdateExam = async (req,resp)=>{
+  try{
+    const { _id } = req.body
+    if(!_id) throw Error("Id not found.")
+    const update = await examColl.findOneAndUpdate({_id},req.body)
+    const exam = await examColl.findOne({_id})
+    resp.status(200).json({exam})
+  }catch({message}){
+    resp.status(500).json({message})
+  }
+}
+
+// Delete exam 
+Controlars.deleteExam = async (req,resp)=>{
+  try{
+    const { _id } = req.body
+    if(!_id) throw Error("Id not found.")
+    await examColl.findOneAndDelete({_id})
+    resp.status(200).json({message:"ok"})
+  }catch({message}){
+    resp.status(500).json({message})
+  }
+}
+
+
+// fileId: '69bab5605c7cd75eb84b3ab6',
+//     name: 'me_uu0_tNkoO.JPG',
+//     size: 2140477,
+//     versionInfo: { id: '69bab5605c7cd75eb84b3ab6', name: 'Version 1' },
+//     filePath: '/me_uu0_tNkoO.JPG',
+//     url: 'https://ik.imagekit.io/1a42ie8sg/me_uu0_tNkoO.JPG',
+//     fileType: 'image',
+//     height: 4032,
+//     width: 3024,
+//     orientation: 1,
+//     thumbnailUrl: 'https://ik.imagekit.io/1a42ie8sg/tr:n-ik_ml_thumbnail/me_uu0_tNkoO.JPG',
+//     AITags: null,
+//     description: null
+// Admin Avatar  
+Controlars.AdminAvatar = async (req,resp)=>{
+  try{
+    const file = req.files[0]
+    // upload 
+    const {error,response} = await uploadFile(file.originalname,file.buffer)
+    const { fileId, url } = response
+    // getAdmin
+    const [admin] = await adminColl.find()
+    admin.avatar = url
+    const prev_avatar_id = admin.avatar_id
+    admin.avatar_id = fileId
+  
+    // save admin 
+    await admin.save()
+    
+    // delete prev avatar 
+    if(prev_avatar_id){
+      await removeFile(prev_avatar_id)
+    }
+    
+    resp.status(200).json({message:"ok"})
+  }catch({message}){
+    resp.status(500).json({message})
+  }
+}
+
+//__________________SLIDER CONTROLARS
+
+// Add Slider 
+Controlars.AddSlider = async (req,resp)=>{
+  try{
+    const { originalname, buffer } = req.files[0]
+    const slider = req.body
+    // file upload 
+    const {error,response} = await uploadFile(originalname,buffer)
+    if(error) throw Error(error)
+    const { fileId, url } = response
+    // create mongoose obj
+    const newSlider = new sliderColl({...slider, image: url, image_id: fileId })
+    const save = await newSlider.save()
+    resp.status(200).json({ data: save })
+  }catch({message}){
+    resp.status(500).json({message})
+  }
+}
+
+// Get Sliders
+Controlars.GetSliders = async (req,resp)=>{
+  try{
+    const sliders = await sliderColl.find()
+    resp.status(200).json({ data: sliders })
+  }catch({message}){
+    resp.status(500).json({message})
+  }
+}
+
+// Delete Slider
+Controlars.deleteSlider = async (req,resp)=>{
+  try{
+    const { _id } = req.body
+    // getting image id
+    const slider = await sliderColl.findOne({_id})
+    const image_id = slider.image_id
+    // delete slider
+    await sliderColl.findOneAndDelete({_id})
+    // delete image from imagekit
+    await removeFile(image_id)
+    resp.status(200).json({ message:"ok" })
+  }catch({message}){
+    resp.status(500).json({message})
+  }
+}
+
+
 
 
 module.exports = Controlars

@@ -6,7 +6,8 @@ const adminSchema = new Schema({
   username: { type: String, default: "admin@admin.com" },
   password: { type: String, default: "admin" },
   avatar: String,
-  token: String
+  token: String,
+  avatar_id: String
 },{timestamps: true});
 
 const adminColl = mongoose.model('admin', adminSchema);

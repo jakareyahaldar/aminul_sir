@@ -1,7 +1,12 @@
 import MenuOption from "./MenuOption.jsx"
 import { HomeSVG, BookSVG, FormSVG, VideoSVG, CalendarSVG, HeartSVG,ChatSVG, GlobeSVG, LockSVG } from "./SvgIcons.jsx"
+import { useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 
 const Sidebar = ({close}) => {
+  const Navigate = useNavigate()
+  const { account } = useSelector( e=>e.auth )
+  
   const menuData = [
     { label: 'হোম', path: '/', icon: <HomeSVG /> },
     { label: 'PDF বই ও শীট', path: '/pdf-books', icon: <BookSVG /> },
@@ -19,7 +24,7 @@ const Sidebar = ({close}) => {
       {/* Profile Section from your Screenshot */}
       <div className="p-6 text-center border-b border-gray-100 bg-gray-50/50">
         <div className="relative inline-block">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC97jYvYSQrPi2YTrpQ9TCdjECz-zngpqr0pObvvcdBQ&s=10" className="w-24 h-24 rounded-full border-4 border-white shadow-md" alt="profile" />
+          <img src={account?.avatar} className="w-24 h-24 rounded-full border-4 border-white shadow-md" alt="loading.." />
           <div className="absolute bottom-1 right-2 w-5 h-5 bg-green-500 border-4 border-white rounded-full"></div>
         </div>
         <h2 className="mt-3 font-bold text-slate-800">মোঃ আমিনুল সরদার </h2>
@@ -39,7 +44,7 @@ const Sidebar = ({close}) => {
 
       {/* Footer Admin Button */}
       <div className="p-4">
-        <button className="w-full bg-slate-100 text-slate-700 py-3 rounded-xl flex items-center justify-center gap-2 font-bold transition-all hover:bg-slate-200">
+        <button onClick={()=>Navigate("/admin")} className="w-full bg-slate-100 text-slate-700 py-3 rounded-xl flex items-center justify-center gap-2 font-bold transition-all hover:bg-slate-200">
            <LockSVG /> অ্যাডমিন লগইন
         </button>
       </div>

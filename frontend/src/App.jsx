@@ -13,7 +13,12 @@ import UserManager from "./Pages/Admin/UserManager/UserManager.jsx"
 import AddBook from "./Pages/Admin/BookManager/AddBook.jsx"
 import AdminPdfBook from "./Pages/Admin/BookManager/PdfBoi.jsx"
 
-import StartLoad from "./Components/StartLoad.jsx"
+import PlayVideo from "./Pages/Videos/Play.jsx"
+import Exams from "./Pages/Exams/Exams.jsx"
+import ExamManager from "./Pages/Admin/ExamManager/ExamManager.jsx"
+import ImageSliderManager from "./Pages/Admin/ImageSlider/ImageSlider.jsx"
+import NotFound from "./Components/NotFound.jsx"
+import VideoManager from "./Pages/Admin/VideoManager/VideoManager.jsx"
 
 // Privet components 
 import AdminPrivetComponent from "./Pages/AdminPrivetComponent.jsx"
@@ -23,6 +28,9 @@ import UserPrivetComponent from "./Pages/UserPrivetComponent.jsx"
 import { useSelector, useDispatch } from "react-redux"
 import { GetAccount } from "./feature/auth/authSlice.js"
 import { GetBooks } from "./feature/books/booksSlice.js"
+import { GetExams } from "./feature/exams/examSlice.js"
+import { GetSlider } from "./feature/slider/sliderSlice.js"
+
 function App() {
   
   
@@ -33,7 +41,10 @@ function App() {
   // console.log(authState)
   
   useEffect(()=>{
+    dispatch(GetAccount())
     dispatch(GetBooks())
+    dispatch(GetExams())
+    dispatch(GetSlider())
   },[])
   
   
@@ -64,12 +75,19 @@ function App() {
             <Route path="/users" element={<UserManager />} />
             <Route path="/add-book" element={<AddBook />} />
             <Route path="/admin/pdf-book" element={<AdminPdfBook />} />
+            <Route path="/admin/slider-manage" element={<ImageSliderManager />} />
+            <Route path="/admin/exams" element={<ExamManager />} />
+            <Route path="/video-manager" element={<VideoManager />} />
           </Route>
 
           
           <Route path="/login" element={<UserAuth />} />
           <Route path="/un-aprove" element={<UnAprove />} />
           <Route path="/admin-login" element={<AdminLogin />} />
+          <Route path="/video-play" element={<PlayVideo />} />
+          <Route path="*" element={<NotFound />} />
+          
+          
         </Routes>
       </BrowserRouter>
     </>
@@ -85,6 +103,7 @@ function UserScope(){
       <Route path="/" element={<Home />} />
       <Route path="/pdf-books" element={<PdfBoi />} />
       <Route path="/videos" element={<Videos />} />
+      <Route path="/assessment" element={<Exams />} />
     </>
     )
 }

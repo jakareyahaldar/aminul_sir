@@ -7,7 +7,7 @@ export default function TopBar({filterAction}){
   return(
     <>
       <div className="flex justify-between items-center px-5 py-3 shadow-md gap-5">
-        <i onClick={()=>Navigate("/")} className="text-xl fas fa-chevron-left"></i>
+        <i onClick={()=>Navigate("/admin")} className="text-xl fas fa-chevron-left"></i>
         <div className="flex gap-2.5 items-center">
           
           {/*Search box*/}
