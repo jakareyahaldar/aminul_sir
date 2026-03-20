@@ -27,8 +27,8 @@ const Sidebar = ({close}) => {
           <img src={account?.avatar} className="w-24 h-24 rounded-full border-4 border-white shadow-md" alt="loading.." />
           <div className="absolute bottom-1 right-2 w-5 h-5 bg-green-500 border-4 border-white rounded-full"></div>
         </div>
-        <h2 className="mt-3 font-bold text-slate-800">মোঃ আমিনুল সরদার </h2>
-        <p className="text-teal-600 text-xs font-bold">প্রধান প্রশাসক</p>
+        <h2 className="mt-3 font-bold text-slate-800">{account?.name}</h2>
+        <p className="text-teal-600 text-xs font-bold">{account?.isAprove ? "Name":"প্রধান প্রশাসক"}</p>
         <div className="mt-4 pt-4 border-t border-dashed">
              <h3 className="font-bold text-slate-700">BTSC</h3>
              <p className="text-teal-600 text-[10px] font-bold">মেনু ও সেটিংস</p>

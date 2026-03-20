@@ -118,7 +118,7 @@ export default function SliderManager() {
 
           <tbody>
             {sliders.map((item) => (
-              <tr key={item.id} className="text-center">
+              <tr key={`${item._id}${Date.now()}`} className="text-center">
                 <td className="p-2 border">
                   <img
                     src={item.image}

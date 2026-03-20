@@ -3,15 +3,21 @@ const userColl = require("../db/models/userSchrma.js")
 const bookColl = require("../db/models/bookSchema.js")
 const examColl = require("../db/models/examSchema.js")
 const sliderColl = require("../db/models/sliderSchema.js")
+const videoColl = require("../db/models/videoSchema.js")
+const noticeColl = require("../db/models/noticeSchema.js")
+
 const { uploadFile, removeFile } = require("../utilities/imagekit.js")
-var jwt = require('jsonwebtoken');
+
+const jwt = require('jsonwebtoken');
 
 const PRIVET_KEY = process.env.PRIVET_KEY
 const Controlars = {}
 
+
+// __________________ADMIN COLLECTION
+// Admin login
 Controlars.adminLogin = async (req,resp)=>{
   try{
-    console.log(req.body)
     const { username, password } = req.body
     if(!username || !password) throw Error("username or password not found.")
     
@@ -69,6 +75,29 @@ Controlars.getAdmin = async (req,resp)=>{
   }
 }
 
+// Edit Dynamik Fild on Admin 
+Controlars.AdminEditDynamic = async (req,resp)=>{
+  try{
+    const [admin] = await adminColl.find()
+    for(const fild in req.body ){
+      if(fild==="password"){
+        const hashPassword = jwt.sign( req.body.password , PRIVET_KEY)
+        admin[fild] = hashPassword
+      }else{
+        admin[fild] = req.body[fild]
+      }
+    }
+    await admin.save()
+    resp.status(200).json({ message:"ok" })
+  }catch(err){
+    resp.status(500).json({message:err.message})
+  }
+}
+
+
+
+
+// _______________________USER COLLECTION 
 // Get all users 
 Controlars.Users = async (req,resp)=>{
   try{
@@ -286,7 +315,94 @@ Controlars.deleteSlider = async (req,resp)=>{
   }
 }
 
+// ___________________VIDEO CONTROLARS
+Controlars.addVideo = async (req,resp)=>{
+  try{
+    const video = new videoColl(req.body)
+    const save = await video.save()
+    resp.status(200).json({ data: save })
+  }catch({message}){
+    resp.status(500).json({message})
+  }
+}
 
+// Get videos 
+Controlars.GetVideos = async (req,resp)=>{
+  try{
+    const data = await videoColl.find()
+    resp.status(200).json({ data })
+  }catch({message}){
+    resp.status(500).json({message})
+  }
+}
+
+// Delete video
+Controlars.deleteVideo = async (req,resp)=>{
+  try{
+    const { _id } = req.body
+    if(!_id) throw Error("Id Not Found.")
+    await videoColl.findOneAndDelete({_id})
+    resp.status(200).json({message:"ok"})
+  }catch({message}){
+    resp.status(500).json({message})
+  }
+}
+
+// update video
+Controlars.updateVideo = async (req,resp)=>{
+  try{
+    const { _id } = req.body
+    if(!_id) throw Error("Id Not Found.")
+    await videoColl.findOneAndUpdate({_id},req.body)
+    resp.status(200).json({data:req.body})
+  }catch({message}){
+    resp.status(500).json({message})
+  }
+}
+
+
+// NOTICE CONTROLARS 
+// Add notice
+Controlars.addNotice = async (req,resp)=>{
+  try{
+    const mongoNotice = new noticeColl(req.body)
+    const notice = await mongoNotice.save()
+    resp.status(200).json({notice})
+  }catch({message}){
+    resp.status(500).json({message})
+  }
+}
+// Get notice
+Controlars.getNotice = async (req,resp)=>{
+  try{
+    const data = await noticeColl.find()
+    resp.status(200).json({data})
+  }catch({message}){
+    resp.status(500).json({message})
+  }
+}
+
+// Update Notice
+Controlars.updateNotice = async (req,resp)=>{
+  try{
+    const { _id } = req.body
+    await noticeColl.findOneAndUpdate({_id},req.body)
+    resp.status(200).json({message:"ok"})
+  }catch({message}){
+    resp.status(500).json({message})
+  }
+}
+
+// Delete Notice 
+Controlars.deleteNotice = async (req,resp)=>{
+  try{
+    const { _id } = req.body
+    await noticeColl.findOneAndDelete({_id})
+    resp.status(200).json({message:"ok"})
+  }catch({message}){
+    resp.status(500).json({message})
+  }
+}
 
 
 module.exports = Controlars

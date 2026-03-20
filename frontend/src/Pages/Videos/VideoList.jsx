@@ -1,36 +1,17 @@
 import { useNavigate, useLocation } from "react-router-dom"
-
-const video_list = [
-  {
-    title: "Video 1",
-    thamnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCAwTaHPQTR2WrEwS57QKrTxEMJO9MpnPwBCtJY2l95w&s=10",
-    url : "https://www.youtube.com/embed/vqaS0DgAoGQ?si=HnGPhSfC3TFwkm-d",
-    type: "Ms-Word",
-    category: "Computer Operation"
-  },
-  {
-    title: "Video 2",
-    thamnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCAwTaHPQTR2WrEwS57QKrTxEMJO9MpnPwBCtJY2l95w&s=10",
-    url : "https://www.youtube.com/embed/vqaS0DgAoGQ?si=HnGPhSfC3TFwkm-d",
-    type: "Ms-Word",
-    category: "Computer Operation"
-  },
-  {
-    title: "Video 3",
-    thamnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCAwTaHPQTR2WrEwS57QKrTxEMJO9MpnPwBCtJY2l95w&s=10",
-    url : "https://www.youtube.com/embed/vqaS0DgAoGQ?si=HnGPhSfC3TFwkm-d",
-    type: "Ms-Word",
-    category: "Computer Operation"
-  },
-  ]
-
+import { useSelector } from "react-redux"
 
 export default function VideoList(){
+  
+  const { videos } = useSelector(e=>e.videos)
+  
+  
+  
   return (
     <div className="p-5 grid gap-5 md:grid-cols-2">
       
       {
-        video_list.map( v=> <Video data={v} /> )
+        videos.map( v=> <Video key={v.url} data={v} /> )
       }
       
     </div>
@@ -41,10 +22,18 @@ function Video({data}){
   
   const Navigate = useNavigate()
   
+  const getPreviewUrl = (url) => {
+    return `${url}?controls=0&modestbranding=1&rel=0`;
+  };
+  
   return(
     <div onClick={()=>Navigate("/video-play",{state:{data}})} className="group rounded-3xl flex flex-col overflow-hidden shadow-2xl">
         <div className="h-[200px] relative">
-          <img className="h-full w-full object-cover" src={data.thamnail} alt="cc" />
+          <iframe
+            src={getPreviewUrl(data.url)}
+            className="w-full h-full object-cover"
+            title="preview"
+          />
           <p className="absolute top-3 left-3 px-3 py-1 backdrop-blur-3xl bg-black/10 rounded-full text-white border-[1px] border-white font-bold text-xs">{data.type}</p>
           <i className="h-12 w-12 flex justify-center items-center rounded-full bg-white absolute bottom-2 right-2 fa-solid fa-play"></i>
           {/*Hover oveely*/}

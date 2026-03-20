@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux"
 import { GetAccount } from "../../feature/auth/authSlice.js"
 
@@ -152,6 +152,8 @@ export default function AuthForm() {
             {mode === "login" ? "Signup" : "Login"}
           </button>
         </p>
+        <Link className="text-center mt-3 block text-blue-300 underline" to="/admin">Admin login</Link>
+        <Link className="text-center block text-blue-300 underline " to="/">Go Dashboard</Link>
       </form>
     </div>
   );

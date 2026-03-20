@@ -8,24 +8,6 @@ export default function PdfList({list}){
   
   const books = list
   
-  // async function GetBooks(){
-  //   try{
-  //     const req = await fetch(API+"/book")
-  //     const res = await req.json()
-  //     if(req.ok){
-  //       setBooks(res.data)
-  //     }
-  //   }catch(err){
-  //     console.log(err)
-  //   }
-  // }
-  
-  // useEffect(()=>{
-  //   GetBooks()
-  // },[])
-  
-  
-  
   return(
     <div className="p-5">
       <div className="my-5">
@@ -40,6 +22,7 @@ export default function PdfList({list}){
         {
           books.map((book)=>{
             return <PdfCard 
+            key={book._id}
             _id={book._id} 
             title={book.title} 
             level={book.level} 

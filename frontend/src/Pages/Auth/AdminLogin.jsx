@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"
-import Navbar from "../../Components/Navbar/Navbar.jsx"
-import BottomBar from "../../Components/BottomBar.jsx"
+import { useNavigate, Link } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { GetAccount } from "../../feature/auth/authSlice.js"
 
@@ -53,9 +51,7 @@ export default function AdminLogin() {
 
   return (
     <>
-    <Navbar />
-    <BottomBar />
-    <div className="py-20 flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="py-20 flex items-center justify-center  min-h-screen bg-gray-100">
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded-xl shadow-md w-80"
@@ -86,6 +82,7 @@ export default function AdminLogin() {
         >
           Login
         </button>
+        <Link className="mt-5 inline-block text-blue-300 underline" to="/">Go to Dashboard</Link>
       </form>
     </div>
     </>

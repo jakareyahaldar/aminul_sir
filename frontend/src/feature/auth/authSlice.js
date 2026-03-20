@@ -44,7 +44,11 @@ const initialState = {
 export const authSlice = createSlice( {
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    editAccountByFild: (state,action)=>{
+      state.account[action.payload.fild] = action.payload.data
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(GetAccount.fulfilled,(state,action)=>{
@@ -67,6 +71,6 @@ export const authSlice = createSlice( {
 })
 
 // Action creators are generated for each case reducer function
-export const {} = authSlice.actions
+export const { editAccountByFild } = authSlice.actions
 
 export default authSlice.reducer

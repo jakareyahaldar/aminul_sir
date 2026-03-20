@@ -28,9 +28,9 @@ const app_config = [
     path: "/blod"
   },
   {
-    label: "BTSC নিউজ",
+    label: "নোটিশ",
     icon: "fa-solid fa-message",
-    path: "/news"
+    path: "/notice"
   },
   ]
 
@@ -43,7 +43,7 @@ export default function AmaderSeba() {
         <div className="h-[5px] w-20 bg-blue-700 rounded-3xl"></div>
       </div>
       <div className="mt-3 grid grid-cols-3 gap-3 justify-items-center items-center">
-        {app_config.map(app => <Seba label={app.label} icon={app.icon} path={app.path} />)}
+        {app_config.map(app => <Seba key={app.label} label={app.label} icon={app.icon} path={app.path} />)}
       </div>
     </div>
   )

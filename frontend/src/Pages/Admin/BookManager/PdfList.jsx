@@ -22,6 +22,7 @@ export default function PdfList({books}){
         {
           books.map((book)=>{
             return <PdfCard 
+              key={book._id}
               data={book}
             />
             

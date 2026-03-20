@@ -9,10 +9,11 @@ export default function PdfBoi(){
   
   const books = useSelector(s =>s.books.books)
   
+  const [search,setSearch] = useState("")
   const [ filterStatus, setFilterStatus ] = useState(false)
   const [ filter, setFl ] = useState({})
   
-  const filteredBooks = books.filter((book)=>{
+  let filteredBooks = books.filter((book)=>{
     const allpass = Object.keys(filter).every((type)=>{
       if(!filter[type]) return true
       return book[type]===filter[type]
@@ -20,7 +21,10 @@ export default function PdfBoi(){
     return allpass
   })
   
-  console.log(filteredBooks)
+  // apply search 
+  if(search){
+    filteredBooks = filteredBooks.filter( b => b?.title?.toLowerCase()?.includes(search) )
+  }
   
   function filterToggle(){
     setFilterStatus(!filterStatus)
@@ -65,7 +69,7 @@ export default function PdfBoi(){
       config={filterConfig} 
       filter={filter} 
     />
-     <TopBar filterAction={filterToggle} /> 
+     <TopBar searchState={[search,setSearch]} filterAction={filterToggle} /> 
      <PdfList list={filteredBooks} />
     </div>
     )

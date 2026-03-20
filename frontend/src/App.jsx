@@ -19,6 +19,9 @@ import ExamManager from "./Pages/Admin/ExamManager/ExamManager.jsx"
 import ImageSliderManager from "./Pages/Admin/ImageSlider/ImageSlider.jsx"
 import NotFound from "./Components/NotFound.jsx"
 import VideoManager from "./Pages/Admin/VideoManager/VideoManager.jsx"
+import Notice from "./Pages/Notice/Notice.jsx"
+import NoticeManager from "./Pages/Admin/Notice/NoticeManager.jsx"
+import NoticeOpen from "./Pages/Notice/OpenNotice.jsx"
 
 // Privet components 
 import AdminPrivetComponent from "./Pages/AdminPrivetComponent.jsx"
@@ -30,6 +33,8 @@ import { GetAccount } from "./feature/auth/authSlice.js"
 import { GetBooks } from "./feature/books/booksSlice.js"
 import { GetExams } from "./feature/exams/examSlice.js"
 import { GetSlider } from "./feature/slider/sliderSlice.js"
+import { GetVideos } from "./feature/videos/videoSlice.js"
+import { GetNotice } from "./feature/notice/noticeSlice.js"
 
 function App() {
   
@@ -45,6 +50,8 @@ function App() {
     dispatch(GetBooks())
     dispatch(GetExams())
     dispatch(GetSlider())
+    dispatch(GetVideos())
+    dispatch(GetNotice())
   },[])
   
   
@@ -78,6 +85,7 @@ function App() {
             <Route path="/admin/slider-manage" element={<ImageSliderManager />} />
             <Route path="/admin/exams" element={<ExamManager />} />
             <Route path="/video-manager" element={<VideoManager />} />
+            <Route path="/admin/notice" element={<NoticeManager />} />
           </Route>
 
           
@@ -86,8 +94,6 @@ function App() {
           <Route path="/admin-login" element={<AdminLogin />} />
           <Route path="/video-play" element={<PlayVideo />} />
           <Route path="*" element={<NotFound />} />
-          
-          
         </Routes>
       </BrowserRouter>
     </>
@@ -104,6 +110,8 @@ function UserScope(){
       <Route path="/pdf-books" element={<PdfBoi />} />
       <Route path="/videos" element={<Videos />} />
       <Route path="/assessment" element={<Exams />} />
+      <Route path="/notice" element={<Notice />} />
+      <Route path="/notice/:_id" element={<NoticeOpen />} />
     </>
     )
 }

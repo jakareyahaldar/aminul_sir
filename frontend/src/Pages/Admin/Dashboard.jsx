@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BackAndTitle from "../../Components/BackAndTitle.jsx"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { editAccountByFild } from "../../feature/auth/authSlice.js"
 
 const option_config = [
   {
@@ -24,12 +25,17 @@ const option_config = [
     title: "Slider Manager",
     path:"/admin/slider-manage",
   },
+  {
+    title: "Notice Manager",
+    path:"/admin/notice",
+  },
 ]
 
 
 export default function AdminDashboard() {
   const API = import.meta.env.VITE_API_URL
-
+  const dispatch = useDispatch()
+  
   const account = useSelector( e=> e.auth.account )
 
 
@@ -48,6 +54,31 @@ export default function AdminDashboard() {
     }
   }
   
+  async function ChangeName(fild){
+    try{
+      const value = prompt("Enter new name.")
+      if(!value) throw Error("Input is empty.")
+      const payload ={
+        method: "POST",
+        headers: {"content-type":"application/json"},
+        body: JSON.stringify({[fild]:value})
+      }
+      const req = await fetch(API+"/admin/editdynamic",payload)
+      const res = await req.json()
+      if(req.ok){
+        if(fild!=="password"){
+          dispatch(editAccountByFild({ fild, data: value }))
+        }else{
+          alert("sucess")
+        }
+      }else{
+        throw Error(res.message)
+      }
+    }catch(err){
+      alert(err.message)
+    }
+  }
+  
 
   return (
     <div className="pt-16 pb-24 px-4">
@@ -59,16 +90,16 @@ export default function AdminDashboard() {
             <input onChange={ChangeAdminImage} className="absolute h-0 w-0 opacity-0" id="admin-img" type="file" />
            </div>
            <div className="text-2xl grid gap-2">
-            <p>Aminul Sarder <i className="fa-solid fa-pen-to-square"></i></p>
-            <p>admin@admin.com <i className="fa-solid fa-pen-to-square"></i></p>
-            <p>pass: ********** <i className="fa-solid fa-pen-to-square"></i></p>
+            <p>{account.name || "not set"} <i onClick={()=>ChangeName("name")} className="fa-solid fa-pen-to-square"></i></p>
+            <p>{account.username} <i onClick={()=>ChangeName("username")} className="fa-solid fa-pen-to-square"></i></p>
+            <p>pass: ********** <i onClick={()=>ChangeName("password")} className="fa-solid fa-pen-to-square"></i></p>
           </div>
       </div>
 
       <div className="p-5 rounded-2xl shadow-xl grid md:grid-cols-3 gap-5">
           {
             option_config.map((option)=>{
-              return <OptionCard title={option.title} path={option.path}  />
+              return <OptionCard key={option.path} title={option.title} path={option.path}  />
             })
           }
       </div>

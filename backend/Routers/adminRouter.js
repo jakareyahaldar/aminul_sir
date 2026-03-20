@@ -4,6 +4,8 @@ const Controlars = require("../Controlars/adminControlar.js")
 
 router.post("/admin-login",Controlars.adminLogin)
 router.get("/get-admin/:id",Controlars.getAdmin)
+router.post("/admin/editdynamic",Controlars.AdminEditDynamic)
+
 router.get("/users",Controlars.Users)
 router.patch("/users/:id/approve",Controlars.AproveChange)
 router.post("/book",Controlars.addBook)
@@ -26,6 +28,18 @@ router.get("/slider",Controlars.GetSliders)
 router.delete("/slider",Controlars.deleteSlider)
 //router.put("/slider",Controlars.editSlider)
 
+
+// Video 
+router.post("/video",Controlars.addVideo)
+router.get("/video",Controlars.GetVideos)
+router.delete("/video",Controlars.deleteVideo)
+router.put("/video",Controlars.updateVideo)
+
+// Notice
+router.post("/notice",Controlars.addNotice)
+router.get("/notice",Controlars.getNotice)
+router.put("/notice",Controlars.updateNotice)
+router.delete("/notice",Controlars.deleteNotice)
 
 
 module.exports = router

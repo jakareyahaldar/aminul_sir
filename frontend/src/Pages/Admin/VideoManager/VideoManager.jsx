@@ -1,22 +1,24 @@
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux"
+import { addVideo, removeVideo, updateVideo } from "../../../feature/videos/videoSlice.js"
 
-export default function VideoManager() {
-  const [videos, setVideos] = useState([
-    {
-      id: 1,
-      title: "Video 1",
-      url: "https://www.youtube.com/embed/vqaS0DgAoGQ",
-      type: "MS WORD",
-      category: "Computer Operation",
-    },
-  ]);
 
-  const [form, setForm] = useState({
+const emptyForm = {
     title: "",
     url: "",
-    type: "MS WORD",
+    type: "ALL",
     category: "Computer Operation",
-  });
+  }
+
+
+export default function VideoManager() {
+  const API = import.meta.env.VITE_API_URL
+  const dispatch = useDispatch()
+  
+  const { videos } = useSelector(e=>e.videos)
+  const [loading,setLoading] = useState(false)
+  
+  const [form, setForm] = useState(emptyForm);
 
   const [editId, setEditId] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -25,41 +27,65 @@ export default function VideoManager() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!form.title || !form.url) {
       alert("Title & URL required");
       return;
     }
 
-    if (editId) {
-      setVideos(
-        videos.map((v) =>
-          v.id === editId ? { ...v, ...form } : v
-        )
-      );
-    } else {
-      setVideos([...videos, { id: Date.now(), ...form }]);
+    const payload = {
+      method: form._id ? "PUT":"POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(form)
     }
-
-    setForm({
-      title: "",
-      url: "",
-      type: "MS WORD",
-      category: "Computer Operation",
-    });
+    
+    try{
+      setLoading(true)
+      const req = await fetch(API+"/video",payload)
+      const res = await req.json()
+      setLoading(false)
+      if(req.ok){
+        if(form._id){
+          dispatch(updateVideo(res.data))
+        }else{
+          dispatch(addVideo(res.data))
+        }
+      }else{
+        alert(res.message)
+      }
+    }catch({message}){
+      console.log(message)
+    }
+    
+    
     setEditId(null);
     setShowModal(false);
+    setForm(emptyForm)
   };
 
   const handleEdit = (video) => {
     setForm(video);
-    setEditId(video.id);
+    setEditId(video._id);
     setShowModal(true);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (confirm("Delete this video?")) {
-      setVideos(videos.filter((v) => v.id !== id));
+      try{
+        const payload = {
+          method: "delete",
+          headers: {"content-type":"application/json"},
+          body: JSON.stringify({_id:id})
+        }
+        const req = await fetch(API+"/video",payload)
+        const res = await req.json()
+        if(req.ok){
+          // remove from redux
+          dispatch(removeVideo({id}))
+        }
+      }catch(err){
+        console.log(err)
+      }
     }
   };
 
@@ -83,7 +109,7 @@ export default function VideoManager() {
           Add Video
         </button>
       </div>
-
+      {loading && <p>Loading...</p>}
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full border text-sm">
@@ -107,7 +133,7 @@ export default function VideoManager() {
               </tr>
             ) : (
               videos.map((v, i) => (
-                <tr key={v.id} className="text-center">
+                <tr key={Date.now()+Date.now()} className="text-center">
                   <td className="border p-2">{i + 1}</td>
 
                   {/* iframe preview (non-clickable) */}
@@ -133,7 +159,7 @@ export default function VideoManager() {
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDelete(v.id)}
+                      onClick={() => handleDelete(v._id)}
                       className="bg-red-500 text-white px-2 py-1 rounded"
                     >
                       Delete
@@ -177,6 +203,7 @@ export default function VideoManager() {
               onChange={handleChange}
               className="w-full border p-2 mb-2"
             >
+              <option>ALL</option>
               <option>MS WORD</option>
               <option>MS EXCEL</option>
               <option>MS POWERPOINT</option>

@@ -10,16 +10,22 @@ import { useSelector } from "react-redux"
 export default function PdfBoi(){
   const books = useSelector(s =>s.books.books)
   
+  const [search,setSearch] = useState("")
   const [ showFilter, setShow ] = useState(false)
   const [filterRes,setFilter] = useState({})
   
-  const filteredBooks = books.filter((book)=>{
+  let filteredBooks = books.filter((book)=>{
     const allpass = Object.keys(filterRes).every((type)=>{
       if(!filterRes[type]) return true
       return book[type]===filterRes[type]
     })
     return allpass
   })
+  
+    // apply search 
+  if(search){
+    filteredBooks = filteredBooks.filter( b => b?.title?.toLowerCase()?.includes(search) )
+  }
   
   
   function update_filterData(key,val){
@@ -62,7 +68,7 @@ export default function PdfBoi(){
         filter={filterRes}
         config={filter_config}
       />
-     <TopBar filterAction={toggleFilter} /> 
+     <TopBar searchState={[search,setSearch]}  filterAction={toggleFilter} /> 
      <PdfList books={filteredBooks} />
      <Link className="px-5 py-2 rounded-2xl bg-blue-500 fixed bottom-28 right-5" to="/add-book">Add Pdf-Book</Link>
     </div>
