@@ -22,11 +22,11 @@ const app_config = [
     icon: "fa-solid fa-calendar",
     path: "/assessment"
   },
-  {
-    label: "রক্তদাতা",
-    icon: "fas fa-heart",
-    path: "/blod"
-  },
+  // {
+  //   label: "রক্তদাতা",
+  //   icon: "fas fa-heart",
+  //   path: "/blod"
+  // },
   {
     label: "নোটিশ",
     icon: "fa-solid fa-message",

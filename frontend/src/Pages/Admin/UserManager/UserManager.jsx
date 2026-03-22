@@ -111,11 +111,11 @@ export default function UsersManagement() {
                 <div
                   key={user._id}
                   onClick={() => setSelectedUser(user)}
-                  className="border rounded-xl p-4 shadow cursor-pointer hover:shadow-lg transition"
+                  className="border rounded-xl p-4 shadow cursor-pointer hover:shadow-lg transition "
                 >
                   <img
                     src={user.avatar || "https://via.placeholder.com/80"}
-                    className="w-20 h-20 rounded-full mx-auto"
+                    className="w-20 h-20 rounded-full mx-auto object-cover"
                   />
 
                   <h2 className="text-center mt-2 font-bold">{user.name}</h2>

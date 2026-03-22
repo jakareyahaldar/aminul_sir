@@ -16,6 +16,10 @@ const noticeSchema = new mongoose.Schema(
     category: {
       type: String
     },
+    breaking: {
+      type: Boolean,
+      default: false
+    }
   },
   {
     timestamps: true, // createdAt, updatedAt auto add

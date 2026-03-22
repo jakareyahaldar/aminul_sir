@@ -56,7 +56,6 @@ export default function AuthForm() {
       
       if(req.ok){
         window.localStorage.setItem("user_data",JSON.stringify(res.user))
-        alert(mode === "login" ? "Login Success" : "Signup Success");
         dispatch(GetAccount())
         Navigate("/")
       }else{

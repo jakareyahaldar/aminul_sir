@@ -129,6 +129,17 @@ Controlars.AproveChange = async (req,resp)=>{
   }catch({message}) { resp.status(500).json({message}) }
 }
 
+// Delete user 
+Controlars.deleteUser = async (req,resp)=>{
+  try{
+    const { _id } = req.params
+    if(!_id) throw Error("Id not found")
+    await userColl.findOneAndDelete({_id})
+    resp.status(200).json({message:"ok"})
+  }catch(err){
+    resp.status(500).json({message: err.message})
+  }
+}
 
 // Add Book 
 Controlars.addBook = async (req,resp)=>{
@@ -375,7 +386,7 @@ Controlars.addNotice = async (req,resp)=>{
 // Get notice
 Controlars.getNotice = async (req,resp)=>{
   try{
-    const data = await noticeColl.find()
+    const data = await noticeColl.find().sort({ createdAt: -1 })
     resp.status(200).json({data})
   }catch({message}){
     resp.status(500).json({message})
@@ -399,6 +410,26 @@ Controlars.deleteNotice = async (req,resp)=>{
     const { _id } = req.body
     await noticeColl.findOneAndDelete({_id})
     resp.status(200).json({message:"ok"})
+  }catch({message}){
+    resp.status(500).json({message})
+  }
+}
+
+// Add Breaking Notice 
+Controlars.addBreakingNotice = async (req,resp)=>{
+  try{
+   const { text } = req.body
+   if(!text) throw Error("Text not fiund.")
+    // Delete older
+    await noticeColl.findOneAndDelete({breaking: true})
+   // addNew 
+   const New = new noticeColl({
+     title:"breaking news",
+     description: text,
+     breaking: true
+   })
+   const breakingNews = await New.save()
+   resp.status(200).json({data:breakingNews})
   }catch({message}){
     resp.status(500).json({message})
   }

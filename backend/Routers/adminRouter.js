@@ -8,6 +8,8 @@ router.post("/admin/editdynamic",Controlars.AdminEditDynamic)
 
 router.get("/users",Controlars.Users)
 router.patch("/users/:id/approve",Controlars.AproveChange)
+router.delete("/users/:_id",Controlars.deleteUser)
+
 router.post("/book",Controlars.addBook)
 router.get("/book",Controlars.getBooks)
 router.put("/book",Controlars.updateBooks)
@@ -37,6 +39,7 @@ router.put("/video",Controlars.updateVideo)
 
 // Notice
 router.post("/notice",Controlars.addNotice)
+router.post("/breaking/notice",Controlars.addBreakingNotice)
 router.get("/notice",Controlars.getNotice)
 router.put("/notice",Controlars.updateNotice)
 router.delete("/notice",Controlars.deleteNotice)

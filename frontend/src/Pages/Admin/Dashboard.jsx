@@ -56,7 +56,7 @@ export default function AdminDashboard() {
   
   async function ChangeName(fild){
     try{
-      const value = prompt("Enter new name.")
+      const value = prompt("Enter new "+fild)
       if(!value) throw Error("Input is empty.")
       const payload ={
         method: "POST",
@@ -79,6 +79,28 @@ export default function AdminDashboard() {
     }
   }
   
+  
+  async function HandleBreakingNews(){
+    try{
+      const text =  prompt("Write Breaking News: ")
+      alert(text)
+      if(!text) return
+      const payload = {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({text})
+      }
+      const req = await fetch(API+"/breaking/notice",payload)
+      const res = await req.json()
+      if(req.ok){
+        console.log(res)
+        alert("Success")
+      }else alert(res.message)
+    }catch({message}){
+      alert(message)
+    }
+  }
+  
 
   return (
     <div className="pt-16 pb-24 px-4">
@@ -94,6 +116,7 @@ export default function AdminDashboard() {
             <p>{account.username} <i onClick={()=>ChangeName("username")} className="fa-solid fa-pen-to-square"></i></p>
             <p>pass: ********** <i onClick={()=>ChangeName("password")} className="fa-solid fa-pen-to-square"></i></p>
           </div>
+          <button onClick={HandleBreakingNews} className="px-10 py-2 rounded-md bg-blue-500 hover:bg-blue-300 transition">Edit Breaking News</button>
       </div>
 
       <div className="p-5 rounded-2xl shadow-xl grid md:grid-cols-3 gap-5">

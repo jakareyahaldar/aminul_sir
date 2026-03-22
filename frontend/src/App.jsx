@@ -22,6 +22,8 @@ import VideoManager from "./Pages/Admin/VideoManager/VideoManager.jsx"
 import Notice from "./Pages/Notice/Notice.jsx"
 import NoticeManager from "./Pages/Admin/Notice/NoticeManager.jsx"
 import NoticeOpen from "./Pages/Notice/OpenNotice.jsx"
+import Profile from "./Pages/Profile/Profile.jsx"
+import BlodDonar from "./Pages/Blod/BlodDonar.jsx"
 
 // Privet components 
 import AdminPrivetComponent from "./Pages/AdminPrivetComponent.jsx"
@@ -112,6 +114,8 @@ function UserScope(){
       <Route path="/assessment" element={<Exams />} />
       <Route path="/notice" element={<Notice />} />
       <Route path="/notice/:_id" element={<NoticeOpen />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/blod" element={<BlodDonar />} />
     </>
     )
 }

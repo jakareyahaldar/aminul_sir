@@ -7,6 +7,7 @@ const userSchema = new Schema({
   username: String,
   password: String,
   avatar: String,
+  avatar_id: String,
   token: String,
   isAprove: {type: Boolean, default: false}
 },{timestamps: true});
