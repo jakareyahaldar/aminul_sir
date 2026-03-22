@@ -1784,10 +1784,6 @@ video {
   transition-duration: 700ms;
 }
 
-.duration-\[5s\] {
-  transition-duration: 5s;
-}
-
 .hover\:scale-\[1\.02\]:hover {
   --tw-scale-x: 1.02;
   --tw-scale-y: 1.02;
