@@ -71,7 +71,6 @@ export default function AddBook(){
     }
   }
   
-  console.log(form)
   
   
   

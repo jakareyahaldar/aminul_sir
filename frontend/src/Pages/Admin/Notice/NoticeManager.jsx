@@ -93,7 +93,7 @@ export default function NoticeManager() {
   };
 
   return (
-    <div className="p-4 max-w-7xl mx-auto">
+    <div className="py-20 p-4 max-w-7xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">⚙️ Notice Manager</h1>
 
       {/* Form */}

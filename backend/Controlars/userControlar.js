@@ -19,7 +19,8 @@ Controlars.signupUser = async (req,resp)=>{
     })
     
     // Check alrady has 
-    const u = userColl.findOne({phone: body.phone})
+    const u = await userColl.findOne({phone: body.phone})
+    console.log(u)
     if(u) throw Error("you have an account!")
     
     const auth_token = jwt.sign( crypto.randomUUID() , PRIVET_KEY)
