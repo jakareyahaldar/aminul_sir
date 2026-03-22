@@ -4,7 +4,7 @@ const {
 } = require('@imagekit/nodejs');
 
 const client = new ImageKit( {
-  privateKey: 'private_SCkmS325AMrjr0WlcJtKDwC8LgA=', // This is the default and can be omitted
+  privateKey: process.env.IMAGEKIT_KEY, // This is the default and can be omitted
 });
 
 
