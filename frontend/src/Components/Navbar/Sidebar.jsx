@@ -12,7 +12,7 @@ const Sidebar = ({close}) => {
     { label: 'PDF বই ও শীট', path: '/pdf-books', icon: <BookSVG /> },
     { label: 'আবেদন ও এনরোলমেন্ট', path: 'https://apromis.app/trainee', icon: <FormSVG /> },
     { label: 'ভিডিও টিউটোরিয়াল', path: '/videos', icon: <VideoSVG /> },
-    { label: 'অ্যাসেসমেন্ট', path: '/calendar', icon: <CalendarSVG /> },
+    { label: 'অ্যাসেসমেন্ট', path: '/notice', icon: <CalendarSVG /> },
     // { label: 'রক্তদাতা', path: '/blood', icon: <HeartSVG /> },
     { label: 'BTSC নিউজ পোর্টাল', path: '/notice', icon: <ChatSVG /> },
     { label: 'Profile', path: '/profile', icon: <GlobeSVG /> },
