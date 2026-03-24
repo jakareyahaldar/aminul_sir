@@ -7,5 +7,8 @@ router.post("/login",Controlars.loginUser)
 router.get("/get-user/:id",Controlars.getUser)
 router.post("/users/avatar",Controlars.changeAvatar)
 router.put("/users",Controlars.updateUser)
+router.post("/blod",Controlars.addBlodDonar)
+router.put("/blod",Controlars.updateBlod)
+router.get("/blod",Controlars.getDonars)
 
 module.exports = router

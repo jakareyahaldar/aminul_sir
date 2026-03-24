@@ -1,45 +1,28 @@
+import BackAndTitle from "../../Components/BackAndTitle.jsx"
+import { Link } from "react-router-dom"
 import { useState } from "react"
+import { useSelector } from "react-redux"
 
-const donorsData = [
-  {
-    id: 1,
-    name: "Rahim Uddin",
-    phone: "01700000000",
-    blood: "A+",
-    address: "Khulna, Bangladesh",
-    lastDonate: "2 months ago",
-  },
-  {
-    id: 2,
-    name: "Karim Sheikh",
-    phone: "01800000000",
-    blood: "B+",
-    address: "Dhaka, Bangladesh",
-    lastDonate: "1 month ago",
-  },
-  {
-    id: 3,
-    name: "Sadia Akter",
-    phone: "01900000000",
-    blood: "O-",
-    address: "Jessore, Bangladesh",
-    lastDonate: "3 months ago",
-  },
-]
+
 
 export default function BloodDonorList() {
+  
+  const {blods} = useSelector(e=>e.blod)
+  
   const [search, setSearch] = useState("")
   const [group, setGroup] = useState("")
   const [selected, setSelected] = useState(null)
 
-  const filtered = donorsData.filter(d =>
+  const filtered = blods.filter(d =>
     (d.name.toLowerCase().includes(search.toLowerCase()) ||
       d.phone.includes(search)) &&
-    (group ? d.blood === group : true)
+    (group ? d.group === group : true)
   )
 
   return (
     <div className="p-4 py-20">
+      <BackAndTitle path="/" title="BlodDonar" />
+      <Link to="/blod/add" className="m-4 px-5 py-2 rounded-md bg-blue-700 text-white block">Add Donar</Link>
       {/* Search + Filter */}
       <div className="flex flex-col md:flex-row gap-3 mb-4">
         <input
@@ -75,7 +58,7 @@ export default function BloodDonorList() {
             onClick={() => setSelected(d)}
           >
             <h2 className="text-xl font-bold">{d.name}</h2>
-            <p className="text-red-500 font-semibold">{d.blood}</p>
+            <p className="text-red-500 font-semibold">{d.group}</p>
             <p className="text-sm text-gray-600">{d.address}</p>
 
             <a
@@ -94,10 +77,9 @@ export default function BloodDonorList() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
           <div className="bg-white p-5 rounded-xl w-[90%] md:w-[400px]">
             <h2 className="text-2xl font-bold mb-2">{selected.name}</h2>
-            <p><b>Blood:</b> {selected.blood}</p>
+            <p><b>Blood:</b> {selected.group}</p>
             <p><b>Phone:</b> {selected.phone}</p>
             <p><b>Address:</b> {selected.address}</p>
-            <p><b>Last Donate:</b> {selected.lastDonate}</p>
 
             <a
               href={`tel:${selected.phone}`}

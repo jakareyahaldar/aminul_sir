@@ -24,6 +24,9 @@ import NoticeManager from "./Pages/Admin/Notice/NoticeManager.jsx"
 import NoticeOpen from "./Pages/Notice/OpenNotice.jsx"
 import Profile from "./Pages/Profile/Profile.jsx"
 import BlodDonar from "./Pages/Blod/BlodDonar.jsx"
+import AddBlodDonar from "./Pages/Blod/AddBlod.jsx"
+import Loading from "./Components/Loading.jsx"
+
 
 // Privet components 
 import AdminPrivetComponent from "./Pages/AdminPrivetComponent.jsx"
@@ -37,13 +40,19 @@ import { GetExams } from "./feature/exams/examSlice.js"
 import { GetSlider } from "./feature/slider/sliderSlice.js"
 import { GetVideos } from "./feature/videos/videoSlice.js"
 import { GetNotice } from "./feature/notice/noticeSlice.js"
+import { GetBlod } from "./feature/blod/blodSlice.js"
 
 function App() {
   
   
   //const Navigate = useNavigate()
    const dispatch = useDispatch()
-  // const authState = useSelector(e => e.auth)
+   
+   const authState = useSelector(e => e.auth)
+   const bookState = useSelector(e => e.books)
+   const examState = useSelector(e => e.exams)
+   const sliderState = useSelector(e => e.slider)
+   const noticeState = useSelector(e => e.notice)
   
   // console.log(authState)
   
@@ -54,7 +63,10 @@ function App() {
     dispatch(GetSlider())
     dispatch(GetVideos())
     dispatch(GetNotice())
+    dispatch(GetBlod())
   },[])
+  
+  
   
   
   // if(authState.isLoading){
@@ -64,6 +76,13 @@ function App() {
   //     </div>
   //     )
   // }
+  
+  
+  if(
+    authState.isLoading || bookState.isLoading || examState.isLoading || noticeState.isLoading || sliderState.isLoading
+    ){
+    return <Loading />
+  }
   
   
   
@@ -116,6 +135,7 @@ function UserScope(){
       <Route path="/notice/:_id" element={<NoticeOpen />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/blod" element={<BlodDonar />} />
+      <Route path="/blod/add" element={<AddBlodDonar />} />
     </>
     )
 }

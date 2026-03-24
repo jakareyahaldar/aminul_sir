@@ -55,6 +55,8 @@ export default function AuthForm() {
       const res = await req.json()
       
       if(req.ok){
+        window.localStorage.removeItem("admntkn")
+        window.localStorage.removeItem("user_data")
         window.localStorage.setItem("user_data",JSON.stringify(res.user))
         dispatch(GetAccount())
         Navigate("/")

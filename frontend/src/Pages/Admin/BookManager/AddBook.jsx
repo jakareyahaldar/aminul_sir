@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 
 // Component import 
 import BackAndTitle from "../../../Components/BackAndTitle.jsx"
-
+import Loading from "../../../Components/Loading1.jsx"
 
 const initialForm = {
     title:"",
@@ -22,6 +22,8 @@ const initialForm = {
 export default function AddBook(){
   const API = import.meta.env.VITE_API_URL
   const Navigate = useNavigate()
+  
+  const [loading,setLoading] = useState(false)
   
   const { state } = useLocation()
   
@@ -46,7 +48,7 @@ export default function AddBook(){
   async function submitForm(e){
     e.preventDefault()
     try{
-      
+      setLoading(true)
       // Check Value
       Object.keys(form).forEach((key)=>{
         if( !form[key] ) throw Error(key +" Not found.")
@@ -59,7 +61,7 @@ export default function AddBook(){
       }
       const req = await fetch(API+"/book",payload)
       const res = await req.json()
-      
+      setLoading(false)
       if(req.ok){
         setForm(initialForm)
         Navigate("/admin/pdf-book")
@@ -76,6 +78,7 @@ export default function AddBook(){
   
   return(
     <div className="py-20 ">
+      <Loading on={loading} />
       <BackAndTitle path="/admin/pdf-book" title="Add Book" />
       <form onSubmit={submitForm} className="px-5">
         <div className="grid gap-2 md:grid-cols-3">

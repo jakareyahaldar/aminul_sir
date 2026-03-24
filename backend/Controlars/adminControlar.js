@@ -273,7 +273,7 @@ Controlars.AdminAvatar = async (req,resp)=>{
       await removeFile(prev_avatar_id)
     }
     
-    resp.status(200).json({message:"ok"})
+    resp.status(200).json({url})
   }catch({message}){
     resp.status(500).json({message})
   }

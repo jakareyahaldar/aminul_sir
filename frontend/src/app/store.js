@@ -6,6 +6,7 @@ import examSlice from "../feature/exams/examSlice.js"
 import sliderSlice from "../feature/slider/sliderSlice.js"
 import videoSlice from "../feature/videos/videoSlice.js"
 import noticeSlice from "../feature/notice/noticeSlice.js"
+import blodSlice from "../feature/blod/blodSlice.js"
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     exams: examSlice,
     slider: sliderSlice,
     videos: videoSlice,
-    notice: noticeSlice
+    notice: noticeSlice,
+    blod: blodSlice
   },
 })

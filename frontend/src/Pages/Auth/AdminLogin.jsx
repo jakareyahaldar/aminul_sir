@@ -35,6 +35,8 @@ export default function AdminLogin() {
       const res = await req.json()
       
       if(req.ok){
+        window.localStorage.removeItem("admntkn")
+        window.localStorage.removeItem("user_data")
         window.localStorage.setItem("admntkn",JSON.stringify(res.admin))
         dispatch(GetAccount())
         Navigate("/admin")

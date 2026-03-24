@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux"
 import BackAndTitle from "../../../Components/BackAndTitle.jsx"
 import { addSlide, removeSlide } from "../../../feature/slider/sliderSlice.js"
+import LoadingAnim from "../../../Components/Loading1.jsx"
 
 export default function SliderManager() {
   const API = import.meta.env.VITE_API_URL
@@ -40,6 +41,7 @@ export default function SliderManager() {
       setLoading(false)
       if(req.ok){
         dispatch(addSlide(res.data))
+        setForm({...form,text:""})
       }else{
         throw Error("Add Faild")
       }
@@ -76,6 +78,7 @@ export default function SliderManager() {
   return (
     <div className="py-20 p-4 max-w-5xl mx-auto">
       <BackAndTitle path="/admin" title="Slider Manager"  />
+      <LoadingAnim on={loading || loading2} />
       {loading2 && <p>Deleting a slider.</p>}
       {/* Form */}
       <form
@@ -85,6 +88,7 @@ export default function SliderManager() {
         <input
           type="file"
           name="file"
+          accept="image/*"
           className="border p-2 rounded"
         />
 

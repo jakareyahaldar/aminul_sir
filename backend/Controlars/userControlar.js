@@ -1,4 +1,5 @@
 const userColl = require("../db/models/userSchrma.js")
+const blodColl = require("../db/models/blodSchema.js")
 var jwt = require('jsonwebtoken');
 const PRIVET_KEY = process.env.PRIVET_KEY
 const { uploadFile, removeFile } = require("../utilities/imagekit.js")
@@ -125,6 +126,53 @@ Controlars.updateUser = async (req,resp)=>{
     }
     await userColl.findOneAndUpdate({_id},req.body)
     resp.status(200).json({message:"ok"})
+  }catch({message}){
+    resp.status(500).json({message})
+  }
+}
+
+// BLOD CONTROLARS
+// addBlod 
+Controlars.addBlodDonar = async (req,resp)=>{
+  try{
+    const { donar_id, name, phone, group } = req.body
+    if( !donar_id || !name || !phone || !group ) throw Error("Please fill add Fild.")
+    const f = await blodColl.findOne({donar_id})
+    if(f) throw Error("Alrady Added.")
+    const blod = new blodColl(req.body)
+    const save = await blod.save()
+    resp.status(200).json({data:save})
+  }catch({message}){
+    resp.status(500).json({message})
+  }
+}
+
+// get Blod Donar 
+Controlars.getDonars = async (req,resp)=>{
+  try{
+    const data = await blodColl.find()
+    resp.status(200).json({data})
+  }catch({message}){
+    resp.status(500).json({message})
+  }
+}
+
+// update Blod
+Controlars.updateBlod = async (req,resp)=>{
+  try{
+    const { _id } = req.body
+    if(!_id) throw Error("Donar not found.")
+    const data = {}
+    const fild = ["name","group","address","phone"]
+    for( const f of fild){
+      if(req.body[f]){
+        data[f]=req.body[f]
+      }else{
+        throw Error(f+" not found.")
+      }
+    }
+    await blodColl.findOneAndUpdate({_id},data)
+    resp.status(200).json({data: req.body})
   }catch({message}){
     resp.status(500).json({message})
   }

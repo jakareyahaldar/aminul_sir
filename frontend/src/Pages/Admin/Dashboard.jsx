@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import BackAndTitle from "../../Components/BackAndTitle.jsx"
 import { useSelector, useDispatch } from "react-redux"
 import { editAccountByFild } from "../../feature/auth/authSlice.js"
+import LoadingEl from "../../Components/Loading1.jsx"
 
 const option_config = [
   {
@@ -36,6 +37,7 @@ export default function AdminDashboard() {
   const API = import.meta.env.VITE_API_URL
   const dispatch = useDispatch()
   
+  const [loading,setLoading] = useState(false)
   const account = useSelector( e=> e.auth.account )
 
 
@@ -44,11 +46,19 @@ export default function AdminDashboard() {
     const formData = new FormData()
     formData.append("file",e.target.files[0])
     try{
+      setLoading(true)
       const payload = {
         method: "POST",
         body: formData
       }
-      await fetch(API+"/admin/avatar",payload)
+      const req = await fetch(API+"/admin/avatar",payload)
+      const res = await req.json()
+      setLoading(false)
+      if(req.ok){
+        dispatch(editAccountByFild({ fild:"avatar", data: res.url }))
+      }else{
+        alert("Faild")
+      }
     }catch(err){
       console.log(err)
     }
@@ -104,12 +114,13 @@ export default function AdminDashboard() {
 
   return (
     <div className="pt-16 pb-24 px-4">
+      <LoadingEl on={loading} />
       <BackAndTitle path="/" title="Admin Panel" />
       <div className="flex flex-col text-center md:flex-row md:text-start items-center gap-8 p-5 rounded-2xl shadow-xl">
            <div className="h-[200px] w-[200px] rounded-full overflow-hidden relative">
             <img className="w-full h-full object-cover" src={account?.avatar} alt="loading.." />
             <label htmlFor="admin-img"><i className="absolute bottom-2 right-1/2 translate-x-1/2 fa-solid fa-pen-to-square"></i></label>
-            <input onChange={ChangeAdminImage} className="absolute h-0 w-0 opacity-0" id="admin-img" type="file" />
+            <input accept="image/*" onChange={ChangeAdminImage} className="absolute h-0 w-0 opacity-0" id="admin-img" type="file" />
            </div>
            <div className="text-2xl grid gap-2">
             <p>{account.name || "not set"} <i onClick={()=>ChangeName("name")} className="fa-solid fa-pen-to-square"></i></p>
