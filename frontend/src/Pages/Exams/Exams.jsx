@@ -4,7 +4,7 @@ import BackAndTitle from "../../Components/BackAndTitle.jsx"
 export default function Exams(){
   return(
     <>
-      <div className="py-20">
+      <div className="py-20 px-6">
         <BackAndTitle path="/" title="Assessment" />
         <ExamList />
       </div>

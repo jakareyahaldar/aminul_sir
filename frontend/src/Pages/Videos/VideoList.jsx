@@ -8,7 +8,7 @@ export default function VideoList(){
   
   
   return (
-    <div className="p-5 grid gap-5 md:grid-cols-2">
+    <div className="py-5 grid gap-5 md:grid-cols-2">
       
       {
         videos.map( v=> <Video key={v.url} data={v} /> )

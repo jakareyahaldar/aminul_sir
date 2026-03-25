@@ -5,7 +5,10 @@ const adminSchema = new Schema({
   name: { type: String, default: "admin" },
   username: { type: String, default: "admin@admin.com" },
   password: { type: String, default: "admin" },
-  avatar: String,
+  avatar: {
+    type: String,
+    default: "https://ik.imagekit.io/4tkeso1ll/images.jpeg?updatedAt=1774468911915"
+  },
   token: String,
   avatar_id: String,
   breakingNews: String

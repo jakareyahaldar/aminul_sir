@@ -5,7 +5,7 @@ import VideoList from "./VideoList.jsx"
 export default function Videos(){
   return(
     <>
-      <div className="py-16">
+      <div className="py-16 px-6">
         
         {/*TitleAndBack*/}
         <BackAndTitle path="/" title="ভিডিও টিউটোরিয়াল" />

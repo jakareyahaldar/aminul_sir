@@ -1,5 +1,6 @@
 const userColl = require("../db/models/userSchrma.js")
 const blodColl = require("../db/models/blodSchema.js")
+const adminColl = require("../db/models/adminSchema.js")
 var jwt = require('jsonwebtoken');
 const PRIVET_KEY = process.env.PRIVET_KEY
 const { uploadFile, removeFile } = require("../utilities/imagekit.js")
@@ -80,8 +81,16 @@ Controlars.getUser = async (req,resp)=>{
     
     const user = await userColl.findOne({_id: id})
     user.password = ""
+    const [admin] = await adminColl.find()
+    const adminDetails = {}
+    if(admin){
+      adminDetails.name = admin.name;
+      adminDetails.avatar = admin.avatar;
+    }
     
-    resp.status(200).json({data: user})
+    const userData = user.toObject()
+    
+    resp.status(200).json({data: {...userData, adminDetails} })
     
   }catch(error){
     resp.status(500).json({message: error.message})

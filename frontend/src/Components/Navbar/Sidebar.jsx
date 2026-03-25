@@ -7,6 +7,9 @@ const Sidebar = ({close}) => {
   const Navigate = useNavigate()
   const { account } = useSelector( e=>e.auth )
   
+  // check is it admin or normal user 
+  const isAdminLogined = !Object.keys(account || {}).includes("isAprove")
+  
   const menuData = [
     { label: 'হোম', path: '/', icon: <HomeSVG /> },
     { label: 'PDF বই ও শীট', path: '/pdf-books', icon: <BookSVG /> },
@@ -32,11 +35,11 @@ const Sidebar = ({close}) => {
       {/* Profile Section from your Screenshot */}
       <div className="p-6 text-center border-b border-gray-100 bg-gray-50/50">
         <div className="relative inline-block">
-          <img src={account?.avatar} className="w-24 h-24 rounded-full border-4 border-white shadow-md object-cover" alt="loading.." />
+          <img src={isAdminLogined ? account?.avatar : account?.adminDetails?.avatar} className="w-24 h-24 rounded-full border-4 border-white shadow-md object-cover" alt="loading.." />
           <div className="absolute bottom-1 right-2 w-5 h-5 bg-green-500 border-4 border-white rounded-full"></div>
         </div>
-        <h2 className="mt-3 font-bold text-slate-800">{account?.name}</h2>
-        <p className="text-teal-600 text-xs font-bold">{account?.isAprove ? "Name":"প্রধান প্রশাসক"}</p>
+        <h2 className="mt-3 font-bold text-slate-800">{isAdminLogined ? account?.name : account?.adminDetails?.name}</h2>
+        <p className="text-teal-600 text-xs font-bold">প্রধান প্রশাসক</p>
         <div className="mt-4 pt-4 border-t border-dashed">
              <h3 className="font-bold text-slate-700">BTSC</h3>
              <p className="text-teal-600 text-[10px] font-bold">মেনু ও সেটিংস</p>
@@ -52,11 +55,12 @@ const Sidebar = ({close}) => {
 
       {/* Footer Admin Button */}
       <div className="p-4">
+        <button onClick={Logout} className="mb-3.5 w-full bg-slate-100 text-slate-700 py-3 rounded-xl flex items-center justify-center gap-2 font-bold transition-all hover:bg-slate-200">
+          <img className="h-10 w-10 rounded-full object-cover" src={ account?.avatar } alt="user avatar"/>
+          Logout
+        </button>
         <button onClick={()=>Navigate("/admin")} className="w-full bg-slate-100 text-slate-700 py-3 rounded-xl flex items-center justify-center gap-2 font-bold transition-all hover:bg-slate-200">
            <LockSVG /> অ্যাডমিন লগইন
-        </button>
-        <button onClick={Logout} className="mt-3.5 w-full bg-slate-100 text-slate-700 py-3 rounded-xl flex items-center justify-center gap-2 font-bold transition-all hover:bg-slate-200">
-           <LockSVG />  Logout
         </button>
       </div>
     </div>
